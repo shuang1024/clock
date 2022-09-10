@@ -26,6 +26,8 @@ def main():
     minute_img = pygame.image.load("minute.png")
     hour_img = pygame.image.load("hour.png")
 
+    smooth = True
+
     while True:
         clock.tick(FPS)
         pygame.display.update()
@@ -35,13 +37,22 @@ def main():
                 pygame.quit()
                 return
 
-        time = list(map(int, list(map(float, str(datetime.datetime.now()).split(" ")[1].split(":")))))
-        time[0] %= 12
+        if smooth:
+            time = list(map(float, str(datetime.datetime.now()).split(" ")[1].split(":")))
+            time[0] %= 12
 
-        display.blit(clock_img, (0, 0))
-        display.blit(rot_center(hour_img, 360 - (30*time[0] + time[1]//2)), (0, 0))
-        display.blit(rot_center(minute_img, 360 - (time[1]*6 + time[2]//10)), (0, 0))
-        display.blit(rot_center(second_img, 360 - (time[2]*6)), (0, 0))
+            display.blit(clock_img, (0, 0))
+            display.blit(rot_center(hour_img, 360 - (30*time[0] + time[1]//2)), (0, 0))
+            display.blit(rot_center(minute_img, 360 - (time[1]*6 + time[2]/10)), (0, 0))
+            display.blit(rot_center(second_img, 360 - (time[2]*6)), (0, 0))
+        else:
+            time = list(map(int, list(map(float, str(datetime.datetime.now()).split(" ")[1].split(":")))))
+            time[0] %= 12
+
+            display.blit(clock_img, (0, 0))
+            display.blit(rot_center(hour_img, 360 - (30*time[0] + time[1]//2 + time[2]//120)), (0, 0))
+            display.blit(rot_center(minute_img, 360 - (time[1]*6 + time[2]//10)), (0, 0))
+            display.blit(rot_center(second_img, 360 - (time[2]*6)), (0, 0))
 
 
 main()
